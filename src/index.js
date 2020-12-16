@@ -21,7 +21,7 @@ app.get("/api/student/:id", (req, res) => {
   console.log(student);
 
   if (student !== undefined) {
-    res.send(studentArray[params - 1]);
+    res.send(student);
   } else {
     res.status(404).send("student ID is not found");
   }
@@ -36,13 +36,15 @@ app.post("/api/student", (req, res) => {
   ) {
     res.status(400).send("Incomplete details");
   } else {
-    res.send(req.body);
+    // res.send(req.body);
     length++;
     let newData = { id: length, ...req.body };
     studentArray.push(newData);
     console.log(studentArray);
     console.log(newData);
-    res.send(newData.id);
+
+
+    res.json(newData.id);
   }
 });
 
@@ -55,15 +57,15 @@ app.put("/api/student/:id", (req, res) => {
 
     // const [name,currentClass,division]=req.body;
     if (
-      studentArray[params].name !== req.body.name ||
-      studentArray[params].currentClass !== req.body.currentClass ||
-      studentArray[params].division !== req.body.division
+      student.name !== req.body.name ||
+      student.currentClass !== req.body.currentClass ||
+      student.division !== req.body.division
     ) {
-      studentArray[params].name = req.body.name;
-      studentArray[params].currentClass = req.body.currentClass;
-      studentArray[params].division = req.body.division;
+      student.name = req.body.name;
+      student.currentClass = req.body.currentClass;
+      student.division = req.body.division;
       console.log(studentArray);
-      res.send(studentArray[params]);
+      res.send(student);
     } else {
       res.status(400).send("No changes are done");
     }
@@ -77,7 +79,7 @@ app.delete("/api/student/:id", (req, res) => {
   if (student !== undefined) {
     studentArray.splice(student, 1);
     console.log(studentArray);
-    res.status(200).send(student);
+    res.status(200).json(student.id);
   } else {
     res.status(404).send("No id is found");
   }
