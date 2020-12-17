@@ -49,9 +49,22 @@ app.post("/api/student", (req, res) => {
 });
 
 app.put("/api/student/:id", (req, res) => {
-  let params = parseInt(req.params.id - 1);
+
+  // const id = parseInt(req.params.id);
+  // if (isNaN(id)) {
+  //   res.sendStatus(400);
+  //   return;
+  // }
+  // const requestedStudentIndex = studentArray.findIndex(
+  //   (student) => student.id === id
+  // );
+  // if (requestedStudentIndex === -1) {
+  //   res.sendStatus(400);
+  //   return;
+  // }
+  let params = parseInt(req.params.id );
   console.log(typeof params, length);
-  let student = studentArray.find((student) => student.id === params + 1);
+  let student = studentArray.find((student) => student.id === params );
   if (student !== undefined) {
     console.log(req.body.name, req.body.currentClass, req.body.division);
 
@@ -65,7 +78,7 @@ app.put("/api/student/:id", (req, res) => {
       student.currentClass = req.body.currentClass;
       student.division = req.body.division;
       console.log(studentArray);
-      res.send(student);
+      res.send(studentArray[student.id-1]);
     } else {
       res.sendStatus(400);
     }
