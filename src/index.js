@@ -16,15 +16,15 @@ app.get("/api/student", (req, res) => {
   res.send(studentArray);
 });
 app.get("/api/student/:id", (req, res) => {
-  let params = parseInt(req.params.id);
-  let student = studentArray.find((student) => student.id === params);
-  console.log(student);
-
-  if (student !== undefined) {
-    res.send(studentArray[student.id]);
-  } else {
-    res.status(404).send("student ID is not found");
+  const id = req.params.id;
+  const requestedStudentIndex = studentArray.findIndex(
+    (student) => student.id === parseInt(id)
+  );
+  if (requestedStudentIndex === -1) {
+    res.status(404).send("Invalid id");
+    return;
   }
+  res.send(studentArray[requestedStudentIndex]);
 });
 
 app.post("/api/student", (req, res) => {
