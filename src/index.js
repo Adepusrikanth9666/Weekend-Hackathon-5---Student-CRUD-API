@@ -27,24 +27,39 @@ app.get("/api/student/:id", (req, res) => {
   res.send(studentArray[requestedStudentIndex]);
 });
 
+// app.post("/api/student", (req, res) => {
+//   const requestBody = req.body;
+//   if (!requestBody.name || !requestBody.currentClass || !requestBody.division) {
+//     res.sendStatus(400);
+//   } else {
+//     // res.send(req.body);
+//     length++;
+    
+//     let newData = { id: length, ...req.body };
+//     studentArray.push(newData);
+//     console.log(studentArray);
+//     console.log(newData);
+
+
+//     res.send({ id: newData.id });
+//   }
+// });
+
 app.post("/api/student", (req, res) => {
   const requestBody = req.body;
   if (!requestBody.name || !requestBody.currentClass || !requestBody.division) {
     res.sendStatus(400);
-  } else {
-    // res.send(req.body);
-    length++;
-    
-    let newData = { id: length, ...req.body };
-    studentArray.push(newData);
-    console.log(studentArray);
-    console.log(newData);
-
-
-    res.send({ id: newData.id });
   }
+  const student = {
+    id: length + 1,
+    name: requestBody.name,
+    currentClass: parseInt(requestBody.currentClass),
+    division: requestBody.division
+  };
+  length++;
+  studentArray.push(student);
+  res.send({ id: student.id });
 });
-
 app.put("/api/student/:id", (req, res) => {
 
   const id = parseInt(req.params.id);
