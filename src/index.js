@@ -44,7 +44,7 @@ app.post("/api/student", (req, res) => {
     console.log(newData);
 
 
-    res.json(newData.id);
+    res.send({ id: newData.id });
   }
 });
 
@@ -67,10 +67,10 @@ app.put("/api/student/:id", (req, res) => {
       console.log(studentArray);
       res.send(student);
     } else {
-      res.status(400).send("No changes are done");
+      res.sendStatus(400);
     }
   } else {
-    res.status(400).send("No Id found to change");
+    res.sendStatus(400);
   }
 });
 app.delete("/api/student/:id", (req, res) => {
@@ -79,9 +79,9 @@ app.delete("/api/student/:id", (req, res) => {
   if (student !== undefined) {
     studentArray.splice(student, 1);
     console.log(studentArray);
-    res.status(200).json(student.id);
+    res.sendStatus(200);
   } else {
-    res.status(404).send("No id is found");
+    res.sendStatus(404);
   }
 });
 
