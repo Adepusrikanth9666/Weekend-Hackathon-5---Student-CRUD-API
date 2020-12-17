@@ -28,16 +28,13 @@ app.get("/api/student/:id", (req, res) => {
 });
 
 app.post("/api/student", (req, res) => {
-  if (
-    req.body === "" ||
-    req.body.name === "" ||
-    req.body.currentClass === "" ||
-    req.body.division === ""
-  ) {
-    res.status(400).send("Incomplete details");
+  const requestBody = req.body;
+  if (!requestBody.name || !requestBody.currentClass || !requestBody.division) {
+    res.sendStatus(400);
   } else {
     // res.send(req.body);
     length++;
+    
     let newData = { id: length, ...req.body };
     studentArray.push(newData);
     console.log(studentArray);
@@ -50,42 +47,35 @@ app.post("/api/student", (req, res) => {
 
 app.put("/api/student/:id", (req, res) => {
 
-  // const id = parseInt(req.params.id);
-  // if (isNaN(id)) {
-  //   res.sendStatus(400);
-  //   return;
-  // }
-  // const requestedStudentIndex = studentArray.findIndex(
-  //   (student) => student.id === id
-  // );
-  // if (requestedStudentIndex === -1) {
-  //   res.sendStatus(400);
-  //   return;
-  // }
-  let params = parseInt(req.params.id );
-  console.log(typeof params, length);
-  let student = studentArray.find((student) => student.id === params );
-  if (student !== undefined) {
-    console.log(req.body.name, req.body.currentClass, req.body.division);
-
-    // const [name,currentClass,division]=req.body;
-    if (
-      student.name !== req.body.name ||
-      student.currentClass !== req.body.currentClass ||
-      student.division !== req.body.division
-    ) {
-      student.name = req.body.name;
-      student.currentClass = req.body.currentClass;
-      student.division = req.body.division;
-      console.log(studentArray);
-      res.send(studentArray[student.id-1]);
-    } else {
-      res.sendStatus(400);
-    }
-  } else {
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) {
     res.sendStatus(400);
+    return;
   }
+  const requestedStudentIndex = studentArray.findIndex(
+    (student) => student.id === id
+  );
+  if (requestedStudentIndex === -1) {
+    res.sendStatus(400);
+    return;
+  }
+  const requestBody = req.body;
+
+  const requestedStudent = studentArray[requestedStudentIndex];
+  if (requestBody.name) {
+    studentArray[requestedStudentIndex].name = requestBody.name;
+  }
+  if (requestBody.currentClass) {
+    studentArray[requestedStudentIndex].currentClass = parseInt(
+      requestBody.currentClass
+    );
+  }
+  if (requestBody.division) {
+    studentArray[requestedStudentIndex].division = requestBody.division;
+  }
+  res.send(requestedStudent);
 });
+
 app.delete("/api/student/:id", (req, res) => {
   let params = parseInt(req.params.id);
   let student = studentArray.find((student) => student.id === params);
