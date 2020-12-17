@@ -77,7 +77,8 @@ app.delete("/api/student/:id", (req, res) => {
   let params = parseInt(req.params.id);
   let student = studentArray.find((student) => student.id === params);
   if (student !== undefined) {
-    studentArray.splice(student, 1);
+    console.log(student.id);
+    studentArray.splice(student.id-1,1);
     console.log(studentArray);
     res.sendStatus(200);
   } else {
