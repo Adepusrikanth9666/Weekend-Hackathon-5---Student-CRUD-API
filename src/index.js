@@ -21,7 +21,7 @@ app.get("/api/student/:id", (req, res) => {
   console.log(student);
 
   if (student !== undefined) {
-    res.send(student);
+    res.send(studentArray[student.id]);
   } else {
     res.status(404).send("student ID is not found");
   }
